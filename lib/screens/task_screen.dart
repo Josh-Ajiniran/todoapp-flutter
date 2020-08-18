@@ -1,5 +1,10 @@
+import 'dart:ui';
+
+import 'package:Todoey/components/tasklist.dart';
+import 'package:Todoey/models/task_data.dart';
+import 'package:Todoey/screens/add_task_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:Todoey/models/tasks.dart';
+import 'package:provider/provider.dart';
 
 class TaskScreen extends StatelessWidget {
   @override
@@ -42,7 +47,7 @@ class TaskScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 40.0),
             child: Text(
-              '${taskLists.length} Tasks',
+              '${Provider.of<TaskData>(context).taskCount} Tasks',
               style: TextStyle(
                   fontSize: 19.0,
                   color: Colors.white,
@@ -53,49 +58,23 @@ class TaskScreen extends StatelessWidget {
             height: 50.0,
           ),
           Expanded(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20.0),
-                  topRight: Radius.circular(20.0),
-                ),
-              ),
-              child: ListView.builder(
-                padding: EdgeInsets.only(left: 40.0, top: 40.0, right: 20.0),
-                itemCount: taskLists.length,
-                itemBuilder: (_, index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(taskLists[index].text,
-                          style: TextStyle(
-                              fontSize: 16,
-                              decoration: taskLists[index].isDone == true
-                                  ? TextDecoration.lineThrough
-                                  : null)),
-                      Checkbox(
-                        value: taskLists[index].isDone,
-                        onChanged: (value) {
-                          taskLists[index].isDone = value;
-                        },
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
+            child: TaskList(),
           )
         ],
       ),
       floatingActionButton: Padding(
-        padding: EdgeInsets.only(right: 16.0),
+        padding: EdgeInsets.only(right: 20.0),
         child: SizedBox(
           height: 70,
           width: 70,
           child: FloatingActionButton(
             backgroundColor: Colors.lightBlueAccent,
-            onPressed: () {},
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) => AddTaskScreen(),
+              );
+            },
             child: Icon(Icons.add, size: 50.0),
           ),
         ),
