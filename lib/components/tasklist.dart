@@ -21,8 +21,14 @@ class TaskList extends StatelessWidget {
             itemCount: taskData.taskCount,
             itemBuilder: (_, index) {
               return TaskTile(
-                text: taskData.taskLists[index].text,
-                isChecked: taskData.taskLists[index].isDone,
+                text: taskData.tasks[index].text,
+                isChecked: taskData.tasks[index].isDone,
+                toggleCheckState: (checkboxState) {
+                  taskData.updateTask(taskData.tasks[index]);
+                },
+                deleteTaskFunc: () {
+                  taskData.deleteTask(taskData.tasks[index]);
+                },
               );
             },
           ),
